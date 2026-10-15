@@ -1,6 +1,6 @@
 # ALINA: Automatic Taxiway ROI Selection Using AI/ML
 
-**Assignment 4 — Questions 3(a) and 3(b)**
+**Assignment 4 
 
 This project automates the selection of a **region of interest (ROI)** for the ALINA taxiway yellow-line detection pipeline. We compare five ROI-generation techniques and investigate whether updating the ROI for every frame is better than selecting it once from the first frame.
 
@@ -209,13 +209,7 @@ The following values are from the four supplied evaluation CSVs; all times are *
 
 **Provisional choice:** **GMM**, based on its 90% labeling rate and lower ALINA-only time than Hough + RANSAC. The choice should be revisited when zero-shot VLM results, independent recall, and full ROI-generation costs are available.
 
-### Graphs
 
-![Frame labeling rates](results/graphs/labeling_rate.png)
-
-![ALINA processing time](results/graphs/alina_time.png)
-
-The graphs visualize the reported metrics; they are not substitutes for independent detection-accuracy measurements.
 
 ## 8. Question 3(b): Fixed vs. dynamic ROI
 
@@ -263,4 +257,4 @@ The previous `vidd_1` comparison produced:
 - scikit-learn documentation: https://scikit-learn.org/stable/
 - OpenCV documentation: https://docs.opencv.org/
 
-**Submission note:** The README intentionally omits a video section, as requested. The assignment's original instructions may still require a demonstration as a separate submission item.
+
