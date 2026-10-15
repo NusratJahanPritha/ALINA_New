@@ -357,59 +357,9 @@ Each ALINA run generates files under `outputs/<method>_alina/vidd_N/`, including
 
 ---
 
-## 7. Evaluation metrics
 
-### 7.1 Frame labeling rate (additional metric)
 
-\[
-\text{Labeling Rate (\%)} = \frac{\text{Frames marked Labeled}}{\text{Total processed frames}}\times100
-\]
-
-This metric tells us how often ALINA returns a line label. **It does not verify that the label matches the true yellow line.** False positives can increase this rate.
-
-### 7.2 Detection rate / recall (ALINA paper metric)
-
-\[
-\text{Recall (\%)} = \frac{TP}{TP+FN}\times100
-\]
-
-True recall requires **independently annotated ground-truth yellow-line pixels** (e.g., CBEM-style masks) and a defined pixel-matching procedure. **Recall is not present in the supplied evaluation CSVs**, so it must be reported as **N/A**, not 0% and not the frame labeling rate.
-
-### 7.3 ALINA processing time
-
-\[
-\text{Mean ALINA Time (ms/frame)} = \frac{1000}{N}\sum_{i=1}^{N}t_i
-\]
-
-The uploaded CSVs provide mean ALINA processing time for each video. **These values exclude the cost of ROI estimation.** They should not be labeled end-to-end times.
-
-### 7.4 End-to-end runtime
-
-For a fixed ROI generated once:
-
-\[
-T_{\mathrm{fixed}}\approx T_{\mathrm{ALINA}}+\frac{T_{\mathrm{ROI,first}}}{N}
-\]
-
-For dynamic ROI generated every frame:
-
-\[
-T_{\mathrm{dynamic}}\approx T_{\mathrm{ALINA}}+\frac{\sum_iT_{\mathrm{ROI},i}}{N}
-\]
-
-For a fair latency comparison, use the same hardware, frame set, and timing boundaries. The formulas omit manual confirmation, repeated program startup, and disk I/O unless separately measured.
-
-### 7.5 ROI stability (dynamic experiment)
-
-\[
-\operatorname{IoU}(ROI_t,ROI_{t-1})=\frac{|ROI_t\cap ROI_{t-1}|}{|ROI_t\cup ROI_{t-1}|}
-\]
-
-A high IoU means the ROI changes little. **High stability is not automatically high accuracy**, because the line may genuinely move during aircraft turns.
-
----
-
-## 8. Quantitative results (from supplied CSV files)
+## 7. Quantitative results (from supplied CSV files)
 
 **Source:** `gmm_evaluation(1).csv`, `hough_evaluation(1).csv`, `kmeans_evaluation(1).csv`, and `random_forestevaluation(1).csv` supplied with the assignment discussion. The numbers below are copied from those files; no zero-shot metrics were supplied.
 
@@ -525,64 +475,8 @@ The fixed and dynamic ROI generators must use **the same GMM estimator and param
 
 ---
 
-## 10. Video demonstration of the end-to-end approach
 
-Record a short demonstration (recommended: **2–4 minutes**) showing the **selected GMM approach** from raw frame to annotated ALINA output.
 
-**Recommended recording sequence:**
-
-1. Show the project directory and `vidd_1`, `vidd_2`, `vidd_3` input sequences.
-2. Show the first input frame and the GMM-generated yellow mask and ROI preview.
-3. Execute `python experiments/gmm_roi.py` and show `vidd_N_roi.txt` being saved.
-4. Execute `run_saved_roi.py` using `--roi-dir outputs/gmm`; confirm the generated ROI without manually modifying it.
-5. Show a sample of the ALINA annotated output frames and line-coordinate files.
-6. Show the evaluation CSV and three generated graphs.
-7. Show the fixed-versus-dynamic GMM comparison, including a few consecutive ROI previews.
-8. Summarize the findings and limitations (no independently measured pixel-level recall; ROI overhead).
-
-Save the recording as `demo/alina_gmm_demo.mp4` if GitHub size limits permit, or host it elsewhere and insert a **working public or instructor-accessible link** here:
-
-**Demo video:** `ADD_VIDEO_LINK_HERE`
-
-Do not present a video link until the recording has actually been uploaded and verified.
-
----
-
-## 11. Files needed for independent verification
-
-To make the results auditable, commit or provide links to:
-
-- Source code for all five methods and the ALINA runner.
-- The actual zero-shot Kaggle notebook and its prompt/model metadata.
-- Seeded experiment settings and pinned package versions.
-- Input dataset access instructions and frame ordering.
-- Random Forest training masks (if redistribution is permitted).
-- Each method's `vidd_N_roi.txt`, ROI preview, and failure logs.
-- ALINA `timing.log` files and generated `evaluation.csv` files.
-- `results/comparison.csv`, graph-generation script, and output graphs.
-- Dynamic-vs-fixed evaluation CSV and matched baseline configuration.
-- A working video-demonstration link.
-
-### Suggested `.gitignore`
-
-```gitignore
-venv/
-.venv/
-__pycache__/
-.ipynb_checkpoints/
-*.pyc
-*.pt
-*.pth
-*.ckpt
-# Large source frames and generated frame sequences; adjust if small samples are permitted:
-data/Raw_Data/
-outputs/*_alina/*/annotated/
-outputs/*_alina/*/birdseye/
-```
-
-Do not ignore your evaluation CSVs, experiment configurations, or small ROI previews if they are needed to reproduce your conclusions.
-
----
 
 ## 12. Limitations and future improvements
 
@@ -603,4 +497,3 @@ Do not ignore your evaluation CSVs, experiment configurations, or small ROI prev
 - **scikit-learn:** K-Means, GaussianMixture, RANSACRegressor, and RandomForestClassifier.
 - **OpenCV:** Image processing, HSV thresholding, edge detection, Hough transform, perspective warping.
 
-**Submission:** Submit the URL of the actual GitHub repository after pushing the files, verifying the README renders, and checking the video link. This README does not invent a GitHub URL.
